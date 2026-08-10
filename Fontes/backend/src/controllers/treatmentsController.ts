@@ -27,9 +27,9 @@ export class TreatmentsController {
   }
 
   // Listar todos os tratamentos
-  @Get()
-  findAll() {
-    return this.treatmentsService.findAll();
+  @Get("institution/:id")
+  findAllByInstitution(@Param("id", ParseUUIDPipe) id: string) {
+    return this.treatmentsService.findAllByInstitution(id);
   }
 
   // Agenda

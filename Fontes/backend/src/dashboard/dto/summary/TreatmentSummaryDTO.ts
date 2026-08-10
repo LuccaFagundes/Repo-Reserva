@@ -1,21 +1,25 @@
 export class TreatmentSummaryDto {
-  id!: string;
 
-  medicationId!: string;
+    id!: string;
 
-  medication!: string;
+    medicationId!: string;
 
-  dosage!: string;
+    medication!: string;
 
-  dosageForm!: string;
+    dosage!: string;
 
-  intervalHours!: number;
+    dosageForm!: string;
 
-  durationDays!: number;
+    intervalHours!: number;
 
-  startDate!: Date;
+    durationDays!: number;
 
-  nextDose?: Date;
+    startDate!: Date;
 
-  status!: string;
+    nextDose?: Date;
+
+    status!: string;
+
+    patientName?: string;
+
 }

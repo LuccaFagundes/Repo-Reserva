@@ -103,7 +103,7 @@ export default function InstitutionDashboardPage() {
                   <tr key={treatment.id}>
                     <td>{treatment.patientName}</td>
 
-                    <td>{treatment.medicationName}</td>
+                    <td>{treatment.medication}</td>
 
                     <td>A cada {treatment.intervalHours} horas</td>
 

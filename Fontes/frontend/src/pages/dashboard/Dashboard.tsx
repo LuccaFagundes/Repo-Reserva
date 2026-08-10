@@ -45,24 +45,26 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="dashboard-page">
-        <div className="dashboard-container">Carregando dashboard...</div>
+      <div className="page">
+        <div className="dashboard-container">
+          <p>Carregando dashboard...</p>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="dashboard-page">
+      <div className="page">
         <div className="dashboard-container">
-          <p>{error}</p>
+          <p className="form-error">{error}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="dashboard-page">
+    <div className="page">
       <div className="dashboard-container">
         <header className="dashboard-header">
           <div>
@@ -80,10 +82,10 @@ export default function Dashboard() {
         </header>
 
         <main className="dashboard-content">
-          <h2>Olá, {dashboard?.institution.name || user?.name}</h2>
-
           {dashboard && (
             <>
+              <h2>Olá, {dashboard.institution.name}</h2>
+
               <p className="dashboard-cnpj">
                 CNPJ: {dashboard.institution.cnpj}
               </p>
@@ -122,71 +124,132 @@ export default function Dashboard() {
             </>
           )}
 
-          <h2 className="dashboard-section-title">Acesso rápido</h2>
+          <section>
+            <h2 className="dashboard-section-title">Acesso rápido</h2>
 
-          <div className="dashboard-grid">
-            {isInstitution && (
-              <>
+            <div className="dashboard-grid">
+              {isInstitution && (
+                <>
+                  <button
+                    className="dashboard-option"
+                    onClick={() => navigate("/institution/patients")}
+                  >
+                    <strong>Pacientes</strong>
+
+                    <span>Gerenciar pacientes</span>
+                  </button>
+
+                  <button
+                    className="dashboard-option"
+                    onClick={() => navigate("/institution/treatments")}
+                  >
+                    <strong>Tratamentos</strong>
+
+                    <span>Gerenciar tratamentos</span>
+                  </button>
+
+                  <button
+                    className="dashboard-option"
+                    onClick={() => navigate("/institution/medications")}
+                  >
+                    <strong>Medicamentos</strong>
+
+                    <span>Gerenciar medicamentos</span>
+                  </button>
+
+                  <button
+                    className="dashboard-option"
+                    onClick={() => navigate("/institution/categories")}
+                  >
+                    <strong>Categorias</strong>
+
+                    <span>Gerenciar categorias</span>
+                  </button>
+                </>
+              )}
+
+              {!isInstitution && (
+                <>
+                  <button
+                    className="dashboard-option"
+                    onClick={() => navigate("/treatments")}
+                  >
+                    <strong>Meus Tratamentos</strong>
+
+                    <span>Consultar seus tratamentos</span>
+                  </button>
+
+                  <button
+                    className="dashboard-option"
+                    onClick={() => navigate("/patient-dashboard")}
+                  >
+                    <strong>Meu Dashboard</strong>
+
+                    <span>Consultar suas informações</span>
+                  </button>
+                </>
+              )}
+            </div>
+          </section>
+
+          {isInstitution && dashboard && (
+            <section className="dashboard-active-treatments">
+              <div className="dashboard-section-header">
+                <div>
+                  <h2 className="dashboard-section-title">
+                    Tratamentos ativos
+                  </h2>
+
+                  <p>Tratamentos atualmente em andamento na instituição.</p>
+                </div>
+
                 <button
-                  className="dashboard-option"
-                  onClick={() => navigate("/institution/patients")}
-                >
-                  <strong>Pacientes</strong>
-
-                  <span>Gerenciar pacientes</span>
-                </button>
-
-                <button
-                  className="dashboard-option"
+                  className="secondary-button"
                   onClick={() => navigate("/institution/treatments")}
                 >
-                  <strong>Tratamentos</strong>
-
-                  <span>Gerenciar tratamentos</span>
+                  Ver todos
                 </button>
+              </div>
 
-                <button
-                  className="dashboard-option"
-                  onClick={() => navigate("/institution/medications")}
-                >
-                  <strong>Medicamentos</strong>
+              {dashboard.activeTreatments.length === 0 ? (
+                <div className="dashboard-empty">
+                  <p>Nenhum tratamento ativo no momento.</p>
+                </div>
+              ) : (
+                <div className="dashboard-treatment-list">
+                  {dashboard.activeTreatments.map((treatment) => (
+                    <div
+                      className="dashboard-treatment-card"
+                      key={treatment.id}
+                    >
+                      <div>
+                        <strong>{treatment.medication}</strong>
 
-                  <span>Gerenciar medicamentos</span>
-                </button>
+                        <span>Paciente: {treatment.patientName ?? "—"}</span>
+                      </div>
 
-                <button
-                  className="dashboard-option"
-                  onClick={() => navigate("/institution/categories")}
-                >
-                  <strong>Categorias</strong>
+                      <div>
+                        <span>A cada {treatment.intervalHours} horas</span>
 
-                  <span>Gerenciar categorias</span>
-                </button>
-              </>
-            )}
+                        <span>{treatment.durationDays} dias</span>
+                      </div>
 
-            {!isInstitution && (
-              <>
-                <button
-                  className="dashboard-option"
-                  onClick={() => navigate("/treatments")}
-                >
-                  <strong>Meus Tratamentos</strong>
+                      <div>
+                        <span>
+                          Início:{" "}
+                          {new Date(treatment.startDate).toLocaleDateString(
+                            "pt-BR",
+                          )}
+                        </span>
 
-                  <span>Consultar seus tratamentos</span>
-                </button>
-
-                <button
-                  className="dashboard-option"
-                  onClick={() => navigate("/patient-dashboard")}
-                >
-                  <strong>Meu Dashboard</strong>
-
-                  <span>Consultar suas informações</span>
-                </button>
-              </>
-            )}
-          </div>
+                        <span className="treatment-status">Ativo</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+          )}
         </main>
       </div>
     </div>

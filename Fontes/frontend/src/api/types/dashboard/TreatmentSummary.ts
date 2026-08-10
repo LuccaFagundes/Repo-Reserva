@@ -1,9 +1,13 @@
 export interface TreatmentSummary {
   id: string;
 
-  patientName: string;
+  medicationId: string;
 
-  medicationName: string;
+  medication: string;
+
+  dosage: string;
+
+  dosageForm: string;
 
   intervalHours: number;
 
@@ -11,5 +15,9 @@ export interface TreatmentSummary {
 
   startDate: string;
 
-  status: "ACTIVE" | "FINISHED" | "CANCELLED";
+  nextDose?: string;
+
+  status: string;
+
+  patientName?: string;
 }

@@ -227,6 +227,24 @@ export class TreatmentsService {
     });
   }
 
+  async findAllByInstitution(id: string) {
+    return this.treatmentRepository.find({
+      where: {
+        id,
+      },
+
+      relations: {
+        user: true,
+        patient: true,
+        medication: true,
+      },
+
+      order: {
+        startDate: "DESC",
+      },
+    });
+  }
+
   async findOne(id: string) {
     const treatment = await this.treatmentRepository.findOne({
       where: {
